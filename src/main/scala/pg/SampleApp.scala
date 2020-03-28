@@ -1,17 +1,11 @@
 package pg
 
-import zio.App
-import zio.console._
+import scala.io._
 
 object MyApp extends App {
 
-  def run(args: List[String]) =
-    myAppLogic.fold(_ => 1, _ => 0)
+  println("Hello! What is your name?")
+  val name = StdIn.readLine()
+  println(s"Hello, ${name}, welcome to ZIO!")
 
-  val myAppLogic =
-    for {
-      _    <- putStrLn("Hello! What is your name?")
-      name <- getStrLn
-      _    <- putStrLn(s"Hello, ${name}, welcome to ZIO!")
-    } yield ()
 }
