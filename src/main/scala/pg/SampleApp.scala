@@ -1,6 +1,6 @@
 package pg
 
-import zio.App
+import zio._
 import zio.console._
 
 object MyApp extends App {
@@ -10,8 +10,13 @@ object MyApp extends App {
 
   val myAppLogic =
     for {
-      _    <- putStrLn("Hello! What is your name?")
-      name <- getStrLn
-      _    <- putStrLn(s"Hello, ${name}, welcome to ZIO!")
+      _      <- putStrLn("Hello! What is your name?")
+      name   <- getStrLn
+      _      <- putStrLn(s"What is your age?")
+      ageStr <- getStrLn
+      age    <- ZIO{ageStr.toInt}.onError { cause =>
+        putStrLn(s"Unable to parse $ageStr as Integer") *> ZIO.dieMessage("")
+      }
+      _      <- putStrLn(s"Hello, ${name}, welcome to ZIO! $age")
     } yield ()
 }
